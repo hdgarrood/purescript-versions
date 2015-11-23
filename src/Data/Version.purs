@@ -129,12 +129,11 @@ versionParser = do
   pure $ Version maj min pat pre buildMeta
 
   where
-  match' = match lieAboutPos
   identifiers = identifier `sepBy` match' '.'
   identifier = intIdent <|> textIdent
   intIdent = numeric <$> nonNegativeInt
   textIdent = do
-    chars <- some (when lieAboutPos acceptableIdentifier)
+    chars <- some (when' acceptableIdentifier)
     let str = fromCharArray (fromList chars)
     case textual str of
       Just i  -> pure i
