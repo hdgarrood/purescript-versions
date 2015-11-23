@@ -9,6 +9,10 @@
     "bower_components",
     "output"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hdgarrood/purescript-versions"
+  },
   "dependencies": {
     "purescript-console": "^0.1.1",
     "purescript-either": "~0.2.3",
