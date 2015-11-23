@@ -1,0 +1,27 @@
+{
+  "name": "purescript-versions",
+  "moduleType": [
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output"
+  ],
+  "dependencies": {
+    "purescript-console": "^0.1.1",
+    "purescript-either": "~0.2.3",
+    "purescript-maybe": "~0.3.5",
+    "purescript-integers": "~0.2.1",
+    "purescript-strings": "~0.7.1",
+    "purescript-lists": "~0.7.7",
+    "purescript-functions": "~0.1.0",
+    "purescript-foldable-traversable": "~0.4.1",
+    "purescript-control": "~0.3.2",
+    "purescript-parsing": "~0.7.1"
+  },
+  "devDependencies": {
+    "purescript-exceptions": "~0.3.2"
+  }
+}
