@@ -18,15 +18,19 @@
 
 module Data.Version
   ( Version()
-  , Identifier()
+  , version
+  , runVersion
   , major
   , minor
   , preRelease
   , buildMetadata
-  , runVersion
-  -- , showVersion
-  -- , parseVersion
-  -- , versionParser
+  , isPreRelease
+  , Identifier()
+  , textual
+  , numeric
+  , showVersion
+  , parseVersion
+  , versionParser
   ) where
 
 import Prelude
@@ -67,8 +71,8 @@ version ma mi pa pre meta =
 -- | The reason we have this function instead of exporting the `Version`
 -- | constructor is that in this way we can guarantee that `Version` values are
 -- | always valid.
-runVersion :: forall r. Version -> (Int -> Int -> Int -> List Identifier -> List Identifier -> r) -> r
-runVersion (Version ma mi pa pre meta) f = f ma mi pa pre meta
+runVersion :: forall r. (Int -> Int -> Int -> List Identifier -> List Identifier -> r) -> Version -> r
+runVersion f (Version ma mi pa pre meta) = f ma mi pa pre meta
 
 major :: Version -> Int
 major (Version x _ _ _ _) = x
@@ -142,16 +146,47 @@ versionParser = do
 parseVersion :: String -> Either ParseError Version
 parseVersion = flip runParser versionParser <<< toList <<< toCharArray
 
+showVersion :: Version -> String
+showVersion = runVersion go
+  where
+  go maj min pat pre build =
+    joinWith "." (map show [maj, min, pat]) <> sep "-" pre <> sep "+" build
+
+  sep _ Nil = ""
+  sep prefix lst = (prefix <>) <<< joinWith "." <<< map showIdentifier $ fromList lst
+
 nonneg :: Int -> Int
 nonneg x = if x < 0 then 0 else x
 
--- instance eqVersion :: Eq Version where
---   eq v1 v2 = compare v1 v2 == EQ
+-- | Tells you whether a version is a pre-release version; that is, if it has
+-- | any pre-release identifiers.
+isPreRelease :: Version -> Boolean
+isPreRelease = not <<< null <<< preRelease
 
--- instance ordVersion :: Ord Version where
---   compare = compare `on` components
---     where
---     components v = map ($ v) [major, minor, patch] preRelease]
+comparePre :: List Identifier -> List Identifier -> Ordering
+comparePre Nil Nil = EQ
+comparePre Nil _ = GT
+comparePre _ Nil = LT
+comparePre (Cons x xs) (Cons y ys) = compare x y <> comparePre xs ys
 
--- instance _showVersion :: Show Version where
---   show (Version xs) = "(Version " <> show xs <> ")"
+instance eqVersion :: Eq Version where
+  eq v1 v2 = compare v1 v2 == EQ
+
+instance ordVersion :: Ord Version where
+  compare v1 v2 =
+    compareNormal v1 v2 <> comparePre' v1 v2
+    where
+    compareNormal = compare `on` runVersion (\ma mi pa _ _ -> [ma, mi, pa])
+    comparePre'   = comparePre `on` preRelease
+
+instance _showVersion :: Show Version where
+  show v = "(fromRight (parseVersion " <> show (showVersion v) <> "))"
+
+instance eqIdentifier :: Eq Identifier where
+  eq i1 i2 = compare i1 i2 == EQ
+
+instance ordIdentifier :: Ord Identifier where
+  compare (IInt _) (IStr _) = LT
+  compare (IStr _) (IInt _) = GT
+  compare (IInt x) (IInt y) = compare x y
+  compare (IStr x) (IStr y) = compare x y

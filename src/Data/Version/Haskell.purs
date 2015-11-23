@@ -19,10 +19,12 @@ import Data.Version.Internal
 data Version = Version (List Int) (List String)
 
 showVersion :: Version -> String
-showVersion (Version ints strings) = f ints <> "-" <> g strings
+showVersion (Version as bs) = f as <> prefix "-" (joinWith "-" (fromList bs))
   where
   f = joinWith "." <<< fromList <<< map show
-  g = joinWith "-" <<< fromList
+
+  prefix _ "" = ""
+  prefix p s  = p <> s
 
 versionParser :: Parser (List Char) Version
 versionParser = do
