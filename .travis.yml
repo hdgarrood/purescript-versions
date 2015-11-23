@@ -11,6 +11,7 @@ install:
   - wget -O $HOME/purescript.tar.gz https://github.com/purescript/purescript/releases/download/$TAG/linux64.tar.gz
   - tar -xvf $HOME/purescript.tar.gz -C $HOME/
   - chmod a+x $HOME/purescript
-  - bower install
+  - npm install pulp bower
+  - ./node_modules/.bin/bower install
 script:
-  - pulp test
+  - ./node_modules/.bin/pulp test
