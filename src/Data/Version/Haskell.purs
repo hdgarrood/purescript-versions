@@ -1,7 +1,12 @@
 -- | A Version data type corresponding to the type in Haskell's `Data.Version`
--- | module, from the `base` library (that is, the standard library).
+-- | module, from the `base` library (that is, the Haskell standard library).
 -- |
 -- | See also [the Haskell documentation](http://hackage.haskell.org/package/base-4.8.1.0/docs/Data-Version.html).
+-- |
+-- | You might need this module in order to deal with PureScript compiler
+-- | versions, as they do not always have 3 components, and therefore will not
+-- | work with the `Data.Version` module in this package. In most other cases,
+-- | though, you should probably be using `Data.Version`.
 module Data.Version.Haskell where
 
 import Prelude
