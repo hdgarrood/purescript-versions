@@ -25,6 +25,9 @@ module Data.Version
   , preRelease
   , buildMetadata
   , isPreRelease
+  , bumpMajor
+  , bumpMinor
+  , bumpPatch
   , Identifier()
   , textual
   , numeric
@@ -88,6 +91,21 @@ preRelease (Version _ _ _ x _) = x
 
 buildMetadata :: Version -> List Identifier
 buildMetadata (Version _ _ _ _ x) = x
+
+-- | Bump the major version, and discard any prerelease identifiers and build
+-- | metadata.
+bumpMajor :: Version -> Version
+bumpMajor v = version (major v + 1) 0 0 Nil Nil
+
+-- | Bump the minor version, and discard any prerelease identifiers and build
+-- | metadata.
+bumpMinor :: Version -> Version
+bumpMinor v = version (major v) (minor v + 1) 0 Nil Nil
+
+-- | Bump the patch version, and discard any prerelease identifiers and build
+-- | metadata.
+bumpPatch :: Version -> Version
+bumpPatch v = version (major v) (minor v) (patch v + 1) Nil Nil
 
 data Identifier
   = IInt Int
