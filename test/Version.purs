@@ -17,17 +17,31 @@ import Data.Version
 import Test.Utils
 
 testVersions :: Array (Tuple String Version)
-testVersions =
-  [ Tuple "0.0.0"         $ v 0 0 0
-  , Tuple "0.0.1"         $ v 0 0 1
-  , Tuple "6.3.4"         $ v 6 3 4
-  , Tuple "13.26.346"     $ v 13 26 346
-  , Tuple "1.2.3-alpha.5" $ v' 1 2 3 (toList [t "alpha", n 5]) Nil
-  , Tuple "1.2.3-6+12"    $ v' 1 2 3 (toList [n 6]) (toList [n 12])
-  ]
+testVersions = normals <> pres <> metas
   where
+  normals =
+    [ Tuple "0.0.0"         $ v 0 0 0
+    , Tuple "0.0.1"         $ v 0 0 1
+    , Tuple "6.3.4"         $ v 6 3 4
+    , Tuple "13.26.346"     $ v 13 26 346
+    ]
+
   v a b c = version a b c Nil Nil
-  v' = version
+
+  pres =
+    [ Tuple "1.0.0-alpha"      $ v1 (toList [t "alpha"])                Nil
+    , Tuple "1.0.0-alpha.1"    $ v1 (toList [t "alpha", n 1])           Nil
+    , Tuple "1.0.0-0.3.7"      $ v1 (toList [n 0, n 3, n 7])            Nil
+    , Tuple "1.0.0-x.7.z.926"  $ v1 (toList [t "x", n 7, t "z", n 926]) Nil
+    ]
+
+  metas =
+    [ Tuple "1.0.0-a+12.23"  $ v1 (toList [t "a"])     (toList [n 12, n 23])
+    , Tuple "1.0.0+hello"    $ v1 Nil                  (toList [t "hello"])
+    , Tuple "1.0.0-alpha+12" $ v1 (toList [t "alpha"]) (toList [n 12])
+    ]
+
+  v1 = version 1 0 0
   t = fromJust <<< textual
   n = numeric
 

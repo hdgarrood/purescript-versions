@@ -7,8 +7,10 @@ import qualified Test.Haskell as Haskell
 import qualified Test.Version as Version
 
 main = do
-  log "Data.Version"
+  log ">>> Data.Version"
   Test.Version.main
 
-  log "Data.Version.Haskell"
+  log ""
+
+  log ">>> Data.Version.Haskell"
   Test.Haskell.main
