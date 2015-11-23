@@ -39,23 +39,15 @@ module Data.Version
 import Prelude
 import Data.Either
 import Data.Maybe
-import Data.Ord (between)
-import Data.Int (fromNumber, fromString)
+import Data.Int (fromString)
 import Data.String (fromCharArray, toCharArray, joinWith, stripPrefix)
-import Data.Char (toLower)
 import Data.List (List(..), toList, fromList, some, null)
 import Data.Function (on)
 import Data.Foldable
-import Data.Maybe.Unsafe (fromJust)
 import Control.Alt ((<|>))
-import Control.Apply ((<*), (*>))
-import Control.Monad (unless)
-import Control.Monad.State.Class (get)
-import Text.Parsing.Parser (Parser(), PState(..), ParseError(..), runParser, fail)
-import Text.Parsing.Parser.Token (when, match)
-import Text.Parsing.Parser.String (string)
+import Control.Apply ((*>))
+import Text.Parsing.Parser (Parser(), ParseError(), runParser, fail)
 import Text.Parsing.Parser.Combinators (sepBy, option)
-import Text.Parsing.Parser.Pos (Position(), initialPos)
 
 import Data.Version.Internal
 

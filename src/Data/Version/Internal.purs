@@ -1,23 +1,16 @@
 module Data.Version.Internal where
 
 import Prelude
-import Data.Either
-import Data.Maybe
 import Data.Ord (between)
-import Data.Int (fromNumber, fromString)
+import Data.Int (fromString)
 import Data.Char (toLower)
-import Data.String (fromCharArray, toCharArray, joinWith)
-import Data.List (List(), toList, fromList, some, null)
-import Data.Function (on)
-import Data.Foldable
+import Data.String (fromCharArray)
+import Data.List (List(), fromList, some, null)
 import Data.Maybe.Unsafe (fromJust)
-import Control.Apply ((<*))
 import Control.Monad (unless)
 import Control.Monad.State.Class (get)
-import Text.Parsing.Parser (Parser(), PState(..), ParseError(..), runParser, fail)
+import Text.Parsing.Parser (Parser(), fail)
 import Text.Parsing.Parser.Token (when, match)
-import Text.Parsing.Parser.String (string)
-import Text.Parsing.Parser.Combinators (sepBy)
 import Text.Parsing.Parser.Pos (Position(), initialPos)
 
 isDigit :: Char -> Boolean
