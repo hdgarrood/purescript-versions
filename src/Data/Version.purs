@@ -167,7 +167,12 @@ comparePre :: List Identifier -> List Identifier -> Ordering
 comparePre Nil Nil = EQ
 comparePre Nil _ = GT
 comparePre _ Nil = LT
-comparePre (Cons x xs) (Cons y ys) = compare x y <> comparePre xs ys
+comparePre (Cons x xs) (Cons y ys) = compare x y <> helper xs ys
+  where
+  helper Nil Nil = EQ
+  helper Nil _ = LT
+  helper _ Nil = GT
+  helper (Cons x xs) (Cons y ys) = compare x y <> helper xs ys
 
 instance eqVersion :: Eq Version where
   eq v1 v2 = compare v1 v2 == EQ
@@ -190,3 +195,7 @@ instance ordIdentifier :: Ord Identifier where
   compare (IStr _) (IInt _) = GT
   compare (IInt x) (IInt y) = compare x y
   compare (IStr x) (IStr y) = compare x y
+
+instance _showIdentifier :: Show Identifier where
+  show (IInt i) = "(numeric " <> show i <> ")"
+  show (IStr s) = "(fromJust (textual " <> show s <> "))"

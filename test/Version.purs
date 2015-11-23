@@ -2,9 +2,11 @@ module Test.Version where
 
 import Prelude
 import Data.Tuple
-import Data.List
+import Data.List hiding (sort)
 import Data.Either
 import Data.Foldable
+import Data.Traversable
+import Data.Array (sort)
 import Data.Maybe.Unsafe (fromJust)
 import Control.Monad.Eff
 import Control.Monad.Eff.Exception
@@ -42,6 +44,20 @@ invalidVersions =
   , ".6"
   ]
 
+-- Taken from the semver spec. These should be in increasing order of
+-- precedence.
+preReleaseVersions :: Array String
+preReleaseVersions =
+  [ "1.0.0-alpha"
+  , "1.0.0-alpha.1"
+  , "1.0.0-alpha.beta"
+  , "1.0.0-beta"
+  , "1.0.0-beta.2"
+  , "1.0.0-beta.11"
+  , "1.0.0-rc.1"
+  , "1.0.0"
+  ]
+
 main :: Eff (err :: EXCEPTION, console :: CONSOLE) Unit
 main = do
   log "parseVersion, showVersion are inverses"
@@ -57,3 +73,7 @@ main = do
     case parseVersion str of
       Right v -> err $ "expected parse error, got: " <> show v
       Left _  -> return unit
+
+  log "pre-release versions are ordered correctly"
+  parsedVersions <- assertSuccess $ traverse parseVersion preReleaseVersions
+  assertEqual parsedVersions (sort parsedVersions)
