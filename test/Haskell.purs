@@ -8,7 +8,6 @@ import Data.Foldable
 import Control.Monad.Eff
 import Control.Monad.Eff.Exception
 import Control.Monad.Eff.Console hiding (error)
-import Text.Parsing.Parser (ParseError())
 
 import Data.Version.Haskell
 import Test.Utils

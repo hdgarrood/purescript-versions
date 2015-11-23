@@ -5,12 +5,14 @@ import Control.Monad.Eff.Console hiding (error)
 
 import qualified Test.Haskell as Haskell
 import qualified Test.Version as Version
+import Test.Utils
 
+main :: EffT Unit
 main = do
   log ">>> Data.Version"
-  Test.Version.main
+  Version.main
 
   log ""
 
   log ">>> Data.Version.Haskell"
-  Test.Haskell.main
+  Haskell.main
