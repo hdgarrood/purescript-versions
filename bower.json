@@ -19,7 +19,8 @@
     "purescript-functions": "~0.1.0",
     "purescript-foldable-traversable": "~0.4.1",
     "purescript-control": "~0.3.2",
-    "purescript-parsing": "~0.7.1"
+    "purescript-parsing": "~0.7.1",
+    "purescript-orders": "~0.1.1"
   },
   "devDependencies": {
     "purescript-exceptions": "~0.3.2"

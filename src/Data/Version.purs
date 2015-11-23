@@ -1,15 +1,41 @@
+-- | This module defines a `Version` data type, for representing software
+-- | versions, according to the [Semantic Versioning](http://semver.org)
+-- | specification. To summarize, a `Version` consists of:
+-- |
+-- | * a MAJOR, MINOR, and a PATCH component, all of which are nonnegative
+-- |   integers.
+-- | * optionally, a list of pre-release identifiers, consisting of ASCII
+-- |   letters, numbers, and hyphens, and which is separated from the three
+-- |   main components with a hyphen.
+-- | * optionally, build metadata, consisting of ASCII letters, numbers, and
+-- |   hyphens, and which is separated from the rest of the version with a plus
+-- |   symbol.
+-- |
+-- | Note that, according to the semver spec, version precedence must ignore
+-- | any build metadata. Therefore, the `Ord` instance ignores the build
+-- | metadata. In order to have the `Eq` instance agree with the `Ord`
+-- | instance, the `Eq` instance ignores build metadata too.
+
 module Data.Version
-  ( Version(..)
+  ( Version()
+  , Identifier()
+  , major
+  , minor
+  , preRelease
+  , buildMetadata
   , runVersion
-  , showVersion
-  , parseVersion
+  -- , showVersion
+  -- , parseVersion
+  -- , versionParser
   ) where
 
 import Prelude
 import Data.Either
 import Data.Maybe
+import Data.Ord (between)
 import Data.Int (fromNumber, fromString)
-import Data.String (fromCharArray, toCharArray, joinWith)
+import Data.String (fromCharArray, toCharArray, joinWith, stripPrefix)
+import Data.Char (toLower)
 import Data.List (List(), toList, fromList, some, null)
 import Data.Function (on)
 import Data.Foldable
@@ -23,42 +49,83 @@ import Text.Parsing.Parser.String (string)
 import Text.Parsing.Parser.Combinators (sepBy)
 import Text.Parsing.Parser.Pos (Position(), initialPos)
 
-newtype Version = Version (List Int)
+import Data.Version.Internal
 
-runVersion :: Version -> List Int
-runVersion (Version xs) = xs
+-- | A semver version.
+data Version
+  = Version Int Int Int (List Identifier) (List Identifier)
 
-showVersion :: Version -> String
-showVersion = joinWith "." <<< fromList <<< map show <<< runVersion
+-- | Smart constructor for versions. Negative integer components will be
+-- | replaced with zeroes.
+version :: Int -> Int -> Int -> List Identifier -> List Identifier -> Version
+version ma mi pa pre meta =
+  Version (nonneg ma) (nonneg mi) (nonneg pa) pre meta
 
-isDigit :: Char -> Boolean
-isDigit c = '0' <= c && c <= '9'
+-- | Unpack a version. Useful for pattern matching.
+-- |
+-- | The reason we have this function instead of exporting the `Version`
+-- | constructor is that in this way we can guarantee that `Version` values are
+-- | always valid.
+runVersion :: forall r. Version -> (Int -> Int -> Int -> List Identifier -> List Identifier -> r) -> r
+runVersion (Version ma mi pa pre meta) f = f ma mi pa pre meta
 
-int :: Parser (List Char) Int
-int = (fromJust <<< fromString <<< fromCharArray <<< fromList) <$> some (when lieAboutPos isDigit)
+major :: Version -> Int
+major (Version x _ _ _ _) = x
 
-lieAboutPos :: forall a. a -> Position
-lieAboutPos = const initialPos
+minor :: Version -> Int
+minor (Version _ x _ _ _) = x
 
-dot :: Parser (List Char) Unit
-dot = void $ when lieAboutPos (== '.')
+patch :: Version -> Int
+patch (Version _ _ x _ _) = x
 
-version :: Parser (List Char) Version
-version = Version <$> (int `sepBy` dot) <* eof
+preRelease :: Version -> List Identifier
+preRelease (Version _ _ _ x _) = x
 
-parseVersion :: String -> Either ParseError Version
-parseVersion = flip runParser version <<< toList <<< toCharArray
+buildMetadata :: Version -> List Identifier
+buildMetadata (Version _ _ _ _ x) = x
 
-eof :: forall a. Parser (List a) Unit
-eof =
-  get >>= \(input :: List a) ->
-    unless (null input) (fail "expected eof")
+data Identifier
+  = IInt Int
+  | IStr String
 
-instance eqVersion :: Eq Version where
-  eq = eq `on` runVersion
+-- | Construct a numeric identifier.
+numeric :: Int -> Identifier
+numeric = IInt <<< nonneg
 
-instance ordVersion :: Ord Version where
-  compare = compare `on` runVersion
+-- | Construct a textual identifier.
+textual :: String -> Maybe Identifier
+textual str =
+  if ok str then Just (IStr str) else Nothing
+  where
+  ok x = all ($ x)
+    [ not <<< isJust <<< fromString -- check that it isn't a number
+    , not <<< startsWith "0"
+    , all acceptable <<< toCharArray 
+    ]
+  acceptable ch = isDigit ch || between 'a' 'z' (toLower ch) || ch == '-'
+  startsWith str = isJust <<< stripPrefix str
 
-instance _showVersion :: Show Version where
-  show (Version xs) = "(Version " <> show xs <> ")"
+showIdentifier :: Identifier -> String
+showIdentifier i = case i of
+  IInt x -> show x
+  IStr s -> s
+
+-- versionParser :: Parser (List Char) Version
+-- versionParser = Version <$> (int `sepBy` dot) <* eof
+
+-- parseVersion :: String -> Either ParseError Version
+-- parseVersion = flip runParser versionParser <<< toList <<< toCharArray
+
+nonneg :: Int -> Int
+nonneg x = if x < 0 then 0 else x
+
+-- instance eqVersion :: Eq Version where
+--   eq v1 v2 = compare v1 v2 == EQ
+
+-- instance ordVersion :: Ord Version where
+--   compare = compare `on` components
+--     where
+--     components v = map ($ v) [major, minor, patch] preRelease]
+
+-- instance _showVersion :: Show Version where
+--   show (Version xs) = "(Version " <> show xs <> ")"
