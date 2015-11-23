@@ -36,17 +36,18 @@ import Data.Ord (between)
 import Data.Int (fromNumber, fromString)
 import Data.String (fromCharArray, toCharArray, joinWith, stripPrefix)
 import Data.Char (toLower)
-import Data.List (List(), toList, fromList, some, null)
+import Data.List (List(..), toList, fromList, some, null)
 import Data.Function (on)
 import Data.Foldable
 import Data.Maybe.Unsafe (fromJust)
-import Control.Apply ((<*))
+import Control.Alt ((<|>))
+import Control.Apply ((<*), (*>))
 import Control.Monad (unless)
 import Control.Monad.State.Class (get)
 import Text.Parsing.Parser (Parser(), PState(..), ParseError(..), runParser, fail)
-import Text.Parsing.Parser.Token (when)
+import Text.Parsing.Parser.Token (when, match)
 import Text.Parsing.Parser.String (string)
-import Text.Parsing.Parser.Combinators (sepBy)
+import Text.Parsing.Parser.Combinators (sepBy, option)
 import Text.Parsing.Parser.Pos (Position(), initialPos)
 
 import Data.Version.Internal
@@ -100,21 +101,47 @@ textual str =
   ok x = all ($ x)
     [ not <<< isJust <<< fromString -- check that it isn't a number
     , not <<< startsWith "0"
-    , all acceptable <<< toCharArray 
+    , all acceptableIdentifier <<< toCharArray 
     ]
-  acceptable ch = isDigit ch || between 'a' 'z' (toLower ch) || ch == '-'
   startsWith str = isJust <<< stripPrefix str
+
+acceptableIdentifier :: Char -> Boolean
+acceptableIdentifier ch = isDigit ch || isAsciiAlpha ch || ch == '-'
 
 showIdentifier :: Identifier -> String
 showIdentifier i = case i of
   IInt x -> show x
   IStr s -> s
 
--- versionParser :: Parser (List Char) Version
--- versionParser = Version <$> (int `sepBy` dot) <* eof
+versionParser :: Parser (List Char) Version
+versionParser = do
+  maj <- nonNegativeInt
+  match' '.'
+  min <- nonNegativeInt
+  match' '.'
+  pat <- nonNegativeInt
 
--- parseVersion :: String -> Either ParseError Version
--- parseVersion = flip runParser versionParser <<< toList <<< toCharArray
+  pre       <- option Nil (match' '-' *> identifiers)
+  buildMeta <- option Nil (match' '+' *> identifiers)
+
+  eof
+
+  pure $ Version maj min pat pre buildMeta
+
+  where
+  match' = match lieAboutPos
+  identifiers = identifier `sepBy` match' '.'
+  identifier = intIdent <|> textIdent
+  intIdent = numeric <$> nonNegativeInt
+  textIdent = do
+    chars <- some (when lieAboutPos acceptableIdentifier)
+    let str = fromCharArray (fromList chars)
+    case textual str of
+      Just i  -> pure i
+      Nothing -> fail $ "invalid identifier: " <> str
+
+parseVersion :: String -> Either ParseError Version
+parseVersion = flip runParser versionParser <<< toList <<< toCharArray
 
 nonneg :: Int -> Int
 nonneg x = if x < 0 then 0 else x

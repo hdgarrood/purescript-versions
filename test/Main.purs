@@ -10,7 +10,7 @@ import Control.Monad.Eff.Exception
 import Control.Monad.Eff.Console hiding (error)
 import Text.Parsing.Parser (ParseError())
 
-import Data.Version
+import Data.Version.Haskell
 
 type EffT a =
   Eff (err :: EXCEPTION, console :: CONSOLE) a
