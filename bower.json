@@ -1,8 +1,5 @@
 {
   "name": "purescript-versions",
-  "moduleType": [
-    "node"
-  ],
   "license": "MIT",
   "ignore": [
     "**/.*",
