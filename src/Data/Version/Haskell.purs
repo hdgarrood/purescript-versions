@@ -9,7 +9,7 @@
 -- | though, you should probably be using `Data.Version`.
 module Data.Version.Haskell where
 
-import Prelude (class Show, class Ord, class Eq, show, compare, flip, pure, bind, map, (<>), (==), (&&), (<<<), ($), (*>), (||), (<$>))
+import Prelude 
 import Control.Apply ((*>))
 import Data.Either (Either)
 import Data.List (List(..), toUnfoldable, fromFoldable, some)
