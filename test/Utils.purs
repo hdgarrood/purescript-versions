@@ -13,7 +13,7 @@ type EffT a =
 assertEqual :: forall a. (Show a, Eq a) => a -> a -> EffT Unit
 assertEqual x y =
   if x == y
-    then return unit
+    then pure unit
     else throwException $ error $ show x <> " did not equal " <> show y
 
 err :: forall a. String -> EffT a
@@ -21,5 +21,5 @@ err = throwException <<< error
 
 assertSuccess :: forall a. Either ParseError a -> EffT a
 assertSuccess =
-  let onLeft = err <<< ("expected successful parse, got: " <>) <<< show
+  let onLeft = err <<< ("expected successful parse, got: " <> _) <<< show
   in either onLeft pure

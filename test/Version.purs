@@ -7,10 +7,11 @@ import Data.Either
 import Data.Foldable
 import Data.Traversable
 import Data.Array (sort)
-import Data.Maybe.Unsafe (fromJust)
+import Data.Maybe (fromJust)
 import Control.Monad.Eff
 import Control.Monad.Eff.Exception
 import Control.Monad.Eff.Console hiding (error)
+import Partial.Unsafe
 
 import Data.Version
 import Test.Utils
@@ -28,20 +29,20 @@ testVersions = normals <> pres <> metas
   v a b c = version a b c Nil Nil
 
   pres =
-    [ Tuple "1.0.0-alpha"      $ v1 (toList [t "alpha"])                Nil
-    , Tuple "1.0.0-alpha.1"    $ v1 (toList [t "alpha", n 1])           Nil
-    , Tuple "1.0.0-0.3.7"      $ v1 (toList [n 0, n 3, n 7])            Nil
-    , Tuple "1.0.0-x.7.z.926"  $ v1 (toList [t "x", n 7, t "z", n 926]) Nil
+    [ Tuple "1.0.0-alpha"      $ v1 (fromFoldable [t "alpha"])                Nil
+    , Tuple "1.0.0-alpha.1"    $ v1 (fromFoldable [t "alpha", n 1])           Nil
+    , Tuple "1.0.0-0.3.7"      $ v1 (fromFoldable [n 0, n 3, n 7])            Nil
+    , Tuple "1.0.0-x.7.z.926"  $ v1 (fromFoldable [t "x", n 7, t "z", n 926]) Nil
     ]
 
   metas =
-    [ Tuple "1.0.0-a+12.23"  $ v1 (toList [t "a"])     (toList [n 12, n 23])
-    , Tuple "1.0.0+hello"    $ v1 Nil                  (toList [t "hello"])
-    , Tuple "1.0.0-alpha+12" $ v1 (toList [t "alpha"]) (toList [n 12])
+    [ Tuple "1.0.0-a+12.23"  $ v1 (fromFoldable [t "a"])     (fromFoldable [n 12, n 23])
+    , Tuple "1.0.0+hello"    $ v1 Nil                  (fromFoldable [t "hello"])
+    , Tuple "1.0.0-alpha+12" $ v1 (fromFoldable [t "alpha"]) (fromFoldable [n 12])
     ]
 
   v1 = version 1 0 0
-  t = fromJust <<< textual
+  t s = unsafePartial $ fromJust $ textual s
   n = numeric
 
 invalidVersions :: Array String
@@ -85,7 +86,7 @@ main = do
     log $ "  " <> str
     case parseVersion str of
       Right v -> err $ "expected parse error, got: " <> show v
-      Left _  -> return unit
+      Left _  -> pure unit
 
   log "pre-release versions are ordered correctly"
   parsedVersions <- assertSuccess $ traverse parseVersion preReleaseVersions

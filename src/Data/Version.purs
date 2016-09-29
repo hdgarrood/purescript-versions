@@ -41,7 +41,7 @@ import Data.Either
 import Data.Maybe
 import Data.Int (fromString)
 import Data.String (fromCharArray, toCharArray, joinWith, stripPrefix)
-import Data.List (List(..), toList, fromList, some, null)
+import Data.List (List(..), fromFoldable, toUnfoldable, some, null)
 import Data.Function (on)
 import Data.Foldable
 import Control.Alt ((<|>))
@@ -112,7 +112,7 @@ textual :: String -> Maybe Identifier
 textual str =
   if ok str then Just (IStr str) else Nothing
   where
-  ok x = all ($ x)
+  ok x = all (_ $ x)
     [ not <<< isJust <<< fromString -- check that it isn't a number
     , not <<< startsWith "0"
     , all acceptableIdentifier <<< toCharArray 
@@ -148,13 +148,13 @@ versionParser = do
   intIdent = numeric <$> nonNegativeInt
   textIdent = do
     chars <- some (when' acceptableIdentifier)
-    let str = fromCharArray (fromList chars)
+    let str = fromCharArray (toUnfoldable chars)
     case textual str of
       Just i  -> pure i
       Nothing -> fail $ "invalid identifier: " <> str
 
 parseVersion :: String -> Either ParseError Version
-parseVersion = flip runParser versionParser <<< toList <<< toCharArray
+parseVersion = flip runParser versionParser <<< fromFoldable <<< toCharArray
 
 showVersion :: Version -> String
 showVersion = runVersion go
@@ -163,7 +163,7 @@ showVersion = runVersion go
     joinWith "." (map show [maj, min, pat]) <> sep "-" pre <> sep "+" build
 
   sep _ Nil = ""
-  sep prefix lst = (prefix <>) <<< joinWith "." <<< map showIdentifier $ fromList lst
+  sep prefix lst = (prefix <> _) <<< joinWith "." <<< map showIdentifier $ toUnfoldable lst
 
 nonneg :: Int -> Int
 nonneg x = if x < 0 then 0 else x

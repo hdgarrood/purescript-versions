@@ -21,7 +21,7 @@ testVersions =
   , Tuple "1.2.3-alpha-5" $ v [1,2,3] ["alpha", "5"]
   ]
   where
-  v as bs = Version (toList as) (toList bs)
+  v as bs = Version (fromFoldable as) (fromFoldable bs)
 
 invalidVersions :: Array String
 invalidVersions =
@@ -49,4 +49,4 @@ main = do
     log $ "  " <> str
     case parseVersion str of
       Right v -> err $ "expected parse error, got: " <> show v
-      Left _  -> return unit
+      Left _  -> pure unit
