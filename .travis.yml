@@ -12,6 +12,8 @@ install:
   - npm install bower
   - npm install
   - bower install
+  - pulp --version
+  - psc --version
 script:
-  - npm run build
-  - npm run test
+  - pulp build
+  - pulp test
