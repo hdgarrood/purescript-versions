@@ -3,8 +3,8 @@ module Test.Main where
 import Prelude
 import Control.Monad.Eff.Console hiding (error)
 
-import qualified Test.Haskell as Haskell
-import qualified Test.Version as Version
+import Test.Haskell as Haskell
+import Test.Version as Version
 import Test.Utils
 
 main :: EffT Unit

@@ -1,8 +1,7 @@
 language: node_js
-sudo: false
+dist: trusty
+sudo: required
 node_js:
-  - 0.10
-  - 0.12
   - 4.1
 env:
   - PATH=$HOME/purescript:$PATH
@@ -11,7 +10,11 @@ install:
   - wget -O $HOME/purescript.tar.gz https://github.com/purescript/purescript/releases/download/$TAG/linux64.tar.gz
   - tar -xvf $HOME/purescript.tar.gz -C $HOME/
   - chmod a+x $HOME/purescript
+  - npm install bower
   - npm install
+  - bower install
+  - pulp --version
+  - psc --version
 script:
-  - npm run build
-  - npm run test
+  - pulp build
+  - pulp test
