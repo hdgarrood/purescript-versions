@@ -8,8 +8,8 @@ import Data.String (fromCharArray)
 import Data.List (List(), toUnfoldable, some, null)
 import Data.Maybe (fromJust)
 import Control.Monad (unless)
-import Control.Monad.State.Class (get)
-import Text.Parsing.Parser (Parser(), fail)
+import Control.Monad.State.Class (gets)
+import Text.Parsing.Parser (Parser(), ParseState(..), fail)
 import Text.Parsing.Parser.Token (when, match)
 import Text.Parsing.Parser.Pos (Position(), initialPos)
 import Partial.Unsafe (unsafePartial)
@@ -36,5 +36,5 @@ when' = when lieAboutPos
 
 eof :: forall a. Parser (List a) Unit
 eof =
-  get >>= \(input :: List a) ->
+  gets (\(ParseState input _ _) -> input) >>= \(input :: List a) ->
     unless (null input) (fail "expected eof")
