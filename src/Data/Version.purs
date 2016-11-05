@@ -40,7 +40,7 @@ import Prelude
 import Data.Either
 import Data.Maybe
 import Data.Int (fromString)
-import Data.String (fromCharArray, toCharArray, joinWith, stripPrefix)
+import Data.String (fromCharArray, toCharArray, joinWith, stripPrefix, Pattern(..))
 import Data.List (List(..), fromFoldable, toUnfoldable, some, null)
 import Data.Function (on)
 import Data.Foldable
@@ -117,7 +117,7 @@ textual str =
     , not <<< startsWith "0"
     , all acceptableIdentifier <<< toCharArray 
     ]
-  startsWith str = isJust <<< stripPrefix str
+  startsWith str = isJust <<< stripPrefix (Pattern str)
 
 acceptableIdentifier :: Char -> Boolean
 acceptableIdentifier ch = isDigit ch || isAsciiAlpha ch || ch == '-'
