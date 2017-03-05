@@ -115,7 +115,7 @@ textual str =
   ok x = all (_ $ x)
     [ not <<< isJust <<< fromString -- check that it isn't a number
     , not <<< startsWith "0"
-    , all acceptableIdentifier <<< toCharArray 
+    , all acceptableIdentifier <<< toCharArray
     ]
   startsWith str = isJust <<< stripPrefix (Pattern str)
 
@@ -130,9 +130,9 @@ showIdentifier i = case i of
 versionParser :: Parser (List Char) Version
 versionParser = do
   maj <- nonNegativeInt
-  match' '.'
+  _ <- match' '.'
   min <- nonNegativeInt
-  match' '.'
+  _ <- match' '.'
   pat <- nonNegativeInt
 
   pre       <- option Nil (match' '-' *> identifiers)
