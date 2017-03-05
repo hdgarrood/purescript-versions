@@ -37,19 +37,18 @@ module Data.Version
   ) where
 
 import Prelude
-import Data.Either
-import Data.Maybe
+import Data.Either (Either)
+import Data.Maybe (Maybe(..), isJust)
 import Data.Int (fromString)
 import Data.String (fromCharArray, toCharArray, joinWith, stripPrefix, Pattern(..))
 import Data.List (List(..), fromFoldable, toUnfoldable, some, null)
 import Data.Function (on)
-import Data.Foldable
+import Data.Foldable (all)
 import Control.Alt ((<|>))
-import Control.Apply ((*>))
 import Text.Parsing.Parser (Parser(), ParseError(), runParser, fail)
 import Text.Parsing.Parser.Combinators (sepBy, option)
 
-import Data.Version.Internal
+import Data.Version.Internal (eof, isAsciiAlpha, isDigit, match', nonNegativeInt, when')
 
 -- | A semver version.
 data Version
@@ -117,7 +116,7 @@ textual str =
     , not <<< startsWith "0"
     , all acceptableIdentifier <<< toCharArray
     ]
-  startsWith str = isJust <<< stripPrefix (Pattern str)
+  startsWith prefix = isJust <<< stripPrefix (Pattern prefix)
 
 acceptableIdentifier :: Char -> Boolean
 acceptableIdentifier ch = isDigit ch || isAsciiAlpha ch || ch == '-'
@@ -182,7 +181,7 @@ comparePre (Cons x xs) (Cons y ys) = compare x y <> helper xs ys
   helper Nil Nil = EQ
   helper Nil _ = LT
   helper _ Nil = GT
-  helper (Cons x xs) (Cons y ys) = compare x y <> helper xs ys
+  helper (Cons x' xs') (Cons y' ys') = compare x' y' <> helper xs' ys'
 
 instance eqVersion :: Eq Version where
   eq v1 v2 = compare v1 v2 == EQ

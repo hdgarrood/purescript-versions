@@ -1,13 +1,11 @@
 module Data.Version.Internal where
 
 import Prelude hiding (when)
-import Data.Ord (between)
 import Data.Int (fromString)
 import Data.Char (toLower)
 import Data.String (fromCharArray)
 import Data.List (List(), toUnfoldable, some, null)
 import Data.Maybe (fromJust)
-import Control.Monad (unless)
 import Control.Monad.State.Class (gets)
 import Text.Parsing.Parser (Parser(), ParseState(..), fail)
 import Text.Parsing.Parser.Token (when, match)

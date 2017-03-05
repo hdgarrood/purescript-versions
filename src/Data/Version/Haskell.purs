@@ -10,7 +10,6 @@
 module Data.Version.Haskell where
 
 import Prelude 
-import Control.Apply ((*>))
 import Data.Either (Either)
 import Data.List (List(..), toUnfoldable, fromFoldable, some)
 import Data.String (fromCharArray, toCharArray, joinWith)
