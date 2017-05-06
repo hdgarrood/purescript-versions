@@ -8,9 +8,9 @@ import Control.Monad.Eff.Console hiding (error)
 import Text.Parsing.Parser (ParseError())
 
 type EffT a =
-  Eff (err :: EXCEPTION, console :: CONSOLE) a
+  Eff (exception :: EXCEPTION, console :: CONSOLE) a
 
-assertEqual :: forall a. (Show a, Eq a) => a -> a -> EffT Unit
+assertEqual :: forall a. Show a => Eq a => a -> a -> EffT Unit
 assertEqual x y =
   if x == y
     then pure unit

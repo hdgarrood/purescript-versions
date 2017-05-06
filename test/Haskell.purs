@@ -35,7 +35,7 @@ invalidVersions =
   , ".6"
   ]
 
-main :: Eff (err :: EXCEPTION, console :: CONSOLE) Unit
+main :: EffT Unit
 main = do
   log "parseVersion, showVersion are inverses"
   for_ testVersions \(Tuple str vers) -> do
