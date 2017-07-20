@@ -23,7 +23,8 @@
     "purescript-control": "^3.0.0",
     "purescript-parsing": "^4.2.1",
     "purescript-partial": "^1.1.2",
-    "purescript-orders": "^3.0.0"
+    "purescript-orders": "^3.0.0",
+    "purescript-generics": "^4.0.0"
   },
   "devDependencies": {
     "purescript-exceptions": "^3.0.0"

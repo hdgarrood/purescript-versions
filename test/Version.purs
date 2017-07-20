@@ -14,6 +14,7 @@ import Control.Monad.Eff.Console hiding (error)
 import Partial.Unsafe
 
 import Data.Version
+import Data.Generic(gShow)
 import Test.Utils
 
 testVersions :: Array (Tuple String Version)
@@ -80,6 +81,11 @@ main = do
     parsed <- assertSuccess $ parseVersion str
     assertEqual parsed vers
     assertEqual str (showVersion vers)
+
+  log "genericShow"
+  for_ testVersions \(Tuple str vers) -> do
+    log $ "  " <> str
+    assertEqual ("\"" <> str <> "\"") (gShow vers)
 
   log "invalid versions produce parse errors"
   for_ invalidVersions $ \str -> do

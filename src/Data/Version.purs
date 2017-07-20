@@ -37,13 +37,14 @@ module Data.Version
   ) where
 
 import Prelude
-import Data.Either (Either)
+import Data.Either (Either, either)
 import Data.Maybe (Maybe(..), isJust)
 import Data.Int (fromString)
 import Data.String (fromCharArray, toCharArray, joinWith, stripPrefix, Pattern(..))
 import Data.List (List(..), fromFoldable, toUnfoldable, some, null)
 import Data.Function (on)
 import Data.Foldable (all)
+import Data.Generic (class Generic, GenericSpine(..), GenericSignature(..))
 import Control.Alt ((<|>))
 import Text.Parsing.Parser (Parser(), ParseError(), runParser, fail)
 import Text.Parsing.Parser.Combinators (sepBy, option)
@@ -208,3 +209,16 @@ instance ordIdentifier :: Ord Identifier where
 instance _showIdentifier :: Show Identifier where
   show (IInt i) = "(numeric " <> show i <> ")"
   show (IStr s) = "(fromJust (textual " <> show s <> "))"
+
+instance genericVersion :: Generic Version where
+  fromSpine s =
+    case s of
+      SString v -> either (const Nothing) Just (parseVersion v)
+      _         -> Nothing
+
+  toSpine =
+    showVersion >>> SString
+
+  toSignature _ =
+    SigString
+
