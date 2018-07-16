@@ -13,7 +13,6 @@ install:
   - npm install
   - bower install
   - pulp --version
-  - psc --version
 script:
   - pulp build
   - pulp test
