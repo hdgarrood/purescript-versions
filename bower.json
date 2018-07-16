@@ -12,20 +12,20 @@
     "url": "git://github.com/hdgarrood/purescript-versions"
   },
   "dependencies": {
-    "purescript-console": "^3.0.0",
-    "purescript-either": "^3.0.0",
-    "purescript-maybe": "^3.0.0",
-    "purescript-integers": "^3.0.0",
-    "purescript-strings": "^3.1.0",
-    "purescript-lists": "^4.1.0",
-    "purescript-functions": "^3.0.0",
-    "purescript-foldable-traversable": "^3.0.0",
-    "purescript-control": "^3.0.0",
-    "purescript-parsing": "^4.2.1",
-    "purescript-partial": "^1.1.2",
-    "purescript-orders": "^3.0.0"
+    "purescript-console": "^4.0.0",
+    "purescript-either": "^4.0.0",
+    "purescript-maybe": "^4.0.0",
+    "purescript-integers": "^4.0.0",
+    "purescript-strings": "^4.0.0",
+    "purescript-lists": "^5.0.0",
+    "purescript-functions": "^4.0.0",
+    "purescript-foldable-traversable": "^4.0.0",
+    "purescript-control": "^4.0.0",
+    "purescript-parsing": "^5.0.1",
+    "purescript-partial": "^2.0.0",
+    "purescript-orders": "^4.0.0"
   },
   "devDependencies": {
-    "purescript-exceptions": "^3.0.0"
+    "purescript-exceptions": "^4.0.0"
   }
 }

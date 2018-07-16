@@ -8,9 +8,9 @@ import Data.Foldable
 import Data.Traversable
 import Data.Array (sort)
 import Data.Maybe (fromJust)
-import Control.Monad.Eff
-import Control.Monad.Eff.Exception
-import Control.Monad.Eff.Console hiding (error)
+import Effect
+import Effect.Exception
+import Effect.Console hiding (error)
 import Partial.Unsafe
 
 import Data.Version
@@ -72,7 +72,7 @@ preReleaseVersions =
   , "1.0.0"
   ]
 
-main :: EffT Unit
+main :: Effect Unit
 main = do
   log "parseVersion, showVersion are inverses"
   for_ testVersions \(Tuple str vers) -> do

@@ -5,9 +5,9 @@ import Data.Tuple
 import Data.List
 import Data.Either
 import Data.Foldable
-import Control.Monad.Eff
-import Control.Monad.Eff.Exception
-import Control.Monad.Eff.Console hiding (error)
+import Effect
+import Effect.Exception
+import Effect.Console hiding (error)
 
 import Data.Version.Haskell
 import Test.Utils
@@ -35,7 +35,7 @@ invalidVersions =
   , ".6"
   ]
 
-main :: EffT Unit
+main :: Effect Unit
 main = do
   log "parseVersion, showVersion are inverses"
   for_ testVersions \(Tuple str vers) -> do

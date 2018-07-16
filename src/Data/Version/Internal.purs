@@ -2,8 +2,8 @@ module Data.Version.Internal where
 
 import Prelude hiding (when)
 import Data.Int (fromString)
-import Data.Char (toLower)
-import Data.String (fromCharArray)
+import Data.Char.Unicode (toLower)
+import Data.String.CodeUnits (fromCharArray)
 import Data.List (List(), toUnfoldable, some, null)
 import Data.Maybe (fromJust)
 import Control.Monad.State.Class (gets)
