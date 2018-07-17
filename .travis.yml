@@ -13,6 +13,7 @@ install:
   - npm install
   - bower install
   - pulp --version
+  - purs --version
 script:
   - pulp build
   - pulp test
