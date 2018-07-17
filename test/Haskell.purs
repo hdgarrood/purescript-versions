@@ -48,5 +48,5 @@ main = do
   for_ invalidVersions $ \str -> do
     log $ "  " <> str
     case parseVersion str of
-      Right v -> err $ "expected parse error, got: " <> show v
+      Right v -> throw $ "expected parse error, got: " <> show v
       Left _  -> pure unit
