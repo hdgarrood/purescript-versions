@@ -12,7 +12,8 @@ module Data.Version.Haskell where
 import Prelude 
 import Data.Either (Either)
 import Data.List (List(..), toUnfoldable, fromFoldable, some)
-import Data.String (fromCharArray, toCharArray, joinWith)
+import Data.String (joinWith)
+import Data.String.CodeUnits (fromCharArray, toCharArray)
 import Text.Parsing.Parser (Parser(), ParseError(), runParser)
 import Text.Parsing.Parser.Combinators (sepBy, option)
 
