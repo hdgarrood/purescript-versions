@@ -19,6 +19,8 @@ testVersions =
   , Tuple "6.3.4"         $ v [6,3,4] []
   , Tuple "13.26.346"     $ v [13,26,346] []
   , Tuple "1.2.3-alpha-5" $ v [1,2,3] ["alpha", "5"]
+  , Tuple "23.1"          $ v [23, 1] []
+  , Tuple "12"            $ v [12] []
   ]
   where
   v as bs = Version (fromFoldable as) (fromFoldable bs)
@@ -33,6 +35,7 @@ invalidVersions =
   , "."
   , "13."
   , ".6"
+  , ""
   ]
 
 main :: Effect Unit

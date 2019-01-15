@@ -15,7 +15,7 @@ import Data.List (List(..), toUnfoldable, fromFoldable, some)
 import Data.String (joinWith)
 import Data.String.CodeUnits (fromCharArray, toCharArray)
 import Text.Parsing.Parser (Parser(), ParseError(), runParser)
-import Text.Parsing.Parser.Combinators (sepBy, option)
+import Text.Parsing.Parser.Combinators (sepBy, sepBy1, option)
 
 import Data.Version.Internal (eof, match', nonNegativeInt, isDigit, isAsciiAlpha, when') 
 
@@ -33,7 +33,7 @@ showVersion (Version as bs) = f as <> prefix "-" (joinWith "-" (toUnfoldable bs)
 
 versionParser :: Parser (List Char) Version
 versionParser = do
-  as <- nonNegativeInt `sepBy` match' '.'
+  as <- nonNegativeInt `sepBy1` match' '.'
   bs <- option Nil (hyphen *> identifier `sepBy` hyphen)
   eof
   pure $ Version as bs
