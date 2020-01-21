@@ -1,20 +1,19 @@
 module Test.Version where
 
 import Prelude
-import Data.Tuple
-import Data.List hiding (sort)
-import Data.Either
-import Data.Foldable
-import Data.Traversable
+import Data.Tuple (Tuple(..))
+import Data.List (List(..), fromFoldable)
+import Data.Either (Either(..))
+import Data.Traversable (for_, traverse)
 import Data.Array (sort)
 import Data.Maybe (fromJust)
-import Effect
-import Effect.Exception
-import Effect.Console hiding (error)
-import Partial.Unsafe
+import Effect (Effect)
+import Effect.Exception (throw)
+import Effect.Console (log)
+import Partial.Unsafe (unsafePartial)
 
-import Data.Version
-import Test.Utils
+import Data.Version (Version, numeric, parseVersion, showVersion, textual, version)
+import Test.Utils (assertEqual, assertSuccess)
 
 testVersions :: Array (Tuple String Version)
 testVersions = normals <> pres <> metas
@@ -56,6 +55,8 @@ invalidVersions =
   , "."
   , "13."
   , ".6"
+  , ""
+  , "2147483648.0.0"
   ]
 
 -- Taken from the semver spec. These should be in increasing order of
