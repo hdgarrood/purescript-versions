@@ -1,16 +1,16 @@
 module Test.Haskell where
 
 import Prelude
-import Data.Tuple
-import Data.List
-import Data.Either
-import Data.Foldable
-import Effect
-import Effect.Exception
-import Effect.Console hiding (error)
+import Data.Tuple (Tuple(..))
+import Data.List (fromFoldable)
+import Data.Either (Either(..))
+import Data.Foldable (for_)
+import Effect (Effect)
+import Effect.Exception (throw)
+import Effect.Console (log)
 
-import Data.Version.Haskell
-import Test.Utils
+import Data.Version.Haskell (Version(..), parseVersion, showVersion)
+import Test.Utils (assertEqual, assertSuccess)
 
 testVersions :: Array (Tuple String Version)
 testVersions =

@@ -1,12 +1,11 @@
 module Test.Main where
 
 import Prelude
-import Effect
-import Effect.Console hiding (error)
+import Effect (Effect)
+import Effect.Console (log)
 
 import Test.Haskell as Haskell
 import Test.Version as Version
-import Test.Utils
 
 main :: Effect Unit
 main = do
