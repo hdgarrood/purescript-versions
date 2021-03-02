@@ -20,7 +20,7 @@ import Data.Version.Internal (eof, match', nonNegativeInt, isDigit, isAsciiAlpha
 import Text.Parsing.Parser (Parser, ParseError, runParser)
 import Text.Parsing.Parser.Combinators (sepBy, sepBy1, option)
 
--- | A version consists of any number of integer components, and any number of
+-- | A version consists of at least one integer component, and any number of
 -- | string components.
 data Version = Version (NonEmptyList Int) (List String)
 
