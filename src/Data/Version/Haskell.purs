@@ -13,6 +13,7 @@ import Prelude
 
 import Data.Either (Either)
 import Data.List (List(..), toUnfoldable, fromFoldable, some)
+import Data.List.Types (NonEmptyList)
 import Data.String (joinWith)
 import Data.String.CodeUnits (fromCharArray, toCharArray)
 import Data.Version.Internal (eof, match', nonNegativeInt, isDigit, isAsciiAlpha, when')
@@ -21,10 +22,10 @@ import Text.Parsing.Parser.Combinators (sepBy, sepBy1, option)
 
 -- | A version consists of any number of integer components, and any number of
 -- | string components.
-data Version = Version (List Int) (List String)
+data Version = Version (NonEmptyList Int) (List String)
 
 showVersion :: Version -> String
-showVersion (Version as bs) = f as <> prefix "-" (joinWith "-" (toUnfoldable bs))
+showVersion (Version as bs) = f (fromFoldable as) <> prefix "-" (joinWith "-" (toUnfoldable bs))
   where
   f = joinWith "." <<< toUnfoldable <<< map show
 
@@ -36,7 +37,7 @@ versionParser = do
   as <- nonNegativeInt `sepBy1` match' '.'
   bs <- option Nil (hyphen *> identifier `sepBy` hyphen)
   eof
-  pure $ Version (fromFoldable as) bs
+  pure $ Version as bs
 
   where
   hyphen = match' '-'
