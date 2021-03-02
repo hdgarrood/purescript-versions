@@ -3,10 +3,11 @@ module Data.Version.Internal where
 import Prelude hiding (when)
 
 import Control.Monad.State.Class (gets)
-import Data.Char.Unicode (toLower)
+import Data.CodePoint.Unicode (toLowerSimple)
 import Data.Int (fromString)
 import Data.List (List, toUnfoldable, some, null)
 import Data.Maybe (maybe)
+import Data.String (codePointFromChar)
 import Data.String.CodeUnits (fromCharArray)
 import Text.Parsing.Parser (Parser, ParseState(..), fail)
 import Text.Parsing.Parser.Pos (Position, initialPos)
@@ -16,7 +17,8 @@ isDigit :: Char -> Boolean
 isDigit c = '0' <= c && c <= '9'
 
 isAsciiAlpha :: Char -> Boolean
-isAsciiAlpha ch = between 'a' 'z' (toLower ch)
+isAsciiAlpha =
+  between (codePointFromChar 'a') (codePointFromChar 'z') <<< toLowerSimple <<< codePointFromChar
 
 nonNegativeInt :: Parser (List Char) Int
 nonNegativeInt =
