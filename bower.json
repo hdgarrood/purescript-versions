@@ -9,23 +9,23 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/hdgarrood/purescript-versions"
+    "url": "https://github.com/hdgarrood/purescript-versions"
   },
   "dependencies": {
-    "purescript-console": "^4.0.0",
-    "purescript-either": "^4.0.0",
-    "purescript-maybe": "^4.0.0",
-    "purescript-integers": "^4.0.0",
-    "purescript-strings": "^4.0.0",
-    "purescript-lists": "^5.0.0",
-    "purescript-functions": "^4.0.0",
-    "purescript-foldable-traversable": "^4.0.0",
-    "purescript-control": "^4.0.0",
-    "purescript-parsing": "^5.0.1",
-    "purescript-partial": "^2.0.0",
-    "purescript-orders": "^4.0.0"
+    "purescript-console": "^5.0.0",
+    "purescript-either": "^5.0.0",
+    "purescript-maybe": "^5.0.0",
+    "purescript-integers": "^5.0.0",
+    "purescript-strings": "^5.0.0",
+    "purescript-lists": "^6.0.0",
+    "purescript-functions": "^5.0.0",
+    "purescript-foldable-traversable": "^5.0.0",
+    "purescript-control": "^5.0.0",
+    "purescript-parsing": "^6.0.0",
+    "purescript-partial": "^3.0.0",
+    "purescript-orders": "^5.0.0"
   },
   "devDependencies": {
-    "purescript-exceptions": "^4.0.0"
+    "purescript-exceptions": "^5.0.0"
   }
 }

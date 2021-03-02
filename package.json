@@ -5,6 +5,6 @@
     "test": "pulp test"
   },
   "devDependencies": {
-    "pulp": "^12.2.0"
+    "pulp": "^15.0.0"
   }
 }

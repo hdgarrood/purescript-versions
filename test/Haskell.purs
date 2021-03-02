@@ -1,15 +1,18 @@
 module Test.Haskell where
 
 import Prelude
-import Data.Tuple (Tuple(..))
-import Data.List (fromFoldable)
+
 import Data.Either (Either(..))
 import Data.Foldable (for_)
-import Effect (Effect)
-import Effect.Exception (throw)
-import Effect.Console (log)
-
+import Data.List (fromFoldable)
+import Data.List.NonEmpty as NonEmptyList
+import Data.Maybe (fromJust)
+import Data.Tuple (Tuple(..))
 import Data.Version.Haskell (Version(..), parseVersion, showVersion)
+import Effect (Effect)
+import Effect.Console (log)
+import Effect.Exception (throw)
+import Partial.Unsafe (unsafePartial)
 import Test.Utils (assertEqual, assertSuccess)
 
 testVersions :: Array (Tuple String Version)
@@ -23,7 +26,7 @@ testVersions =
   , Tuple "12"            $ v [12] []
   ]
   where
-  v as bs = Version (fromFoldable as) (fromFoldable bs)
+  v as bs = Version (unsafePartial fromJust $ NonEmptyList.fromFoldable as) (fromFoldable bs)
 
 invalidVersions :: Array String
 invalidVersions =
