@@ -22,6 +22,7 @@ module Data.Version
   , runVersion
   , major
   , minor
+  , patch
   , preRelease
   , buildMetadata
   , isPreRelease
