@@ -46,8 +46,8 @@ import Data.List (List(..), fromFoldable, toUnfoldable, some, null)
 import Data.Function (on)
 import Data.Foldable (all)
 import Control.Alt ((<|>))
-import Text.Parsing.Parser (Parser(), ParseError(), runParser, fail)
-import Text.Parsing.Parser.Combinators (sepBy, option)
+import Parsing (Parser(), ParseError(), runParser, fail)
+import Parsing.Combinators (sepBy, option)
 
 import Data.Version.Internal (eof, isAsciiAlpha, isDigit, match', nonNegativeInt, when')
 

@@ -2,16 +2,14 @@ module Data.Version.Internal where
 
 import Prelude hiding (when)
 
-import Control.Monad.State.Class (gets)
 import Data.CodePoint.Unicode (toLowerSimple)
 import Data.Int (fromString)
 import Data.List (List, toUnfoldable, some, null)
 import Data.Maybe (maybe)
 import Data.String (codePointFromChar)
 import Data.String.CodeUnits (fromCharArray)
-import Text.Parsing.Parser (Parser, ParseState(..), fail)
-import Text.Parsing.Parser.Pos (Position, initialPos)
-import Text.Parsing.Parser.Token (when, match)
+import Parsing (Parser, ParseState(..), Position, initialPos, getParserT, fail)
+import Parsing.Token (when, match)
 
 isDigit :: Char -> Boolean
 isDigit c = '0' <= c && c <= '9'
@@ -37,5 +35,5 @@ when' = when lieAboutPos
 
 eof :: forall a. Parser (List a) Unit
 eof =
-  gets (\(ParseState input _ _) -> input) >>= \(input :: List a) ->
+  getParserT >>= \(ParseState (input :: List a) _ _) ->
     unless (null input) (fail "expected eof")
