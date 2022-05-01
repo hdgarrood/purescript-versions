@@ -47,7 +47,7 @@ jobs:
         run: npm install
 
       - name: Install Bower dependencies
-        run: bower install
+        run: npm install --global bower && bower install
 
       - name: Build the project
         run: npm run build
