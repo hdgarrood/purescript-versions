@@ -4,7 +4,7 @@ import Prelude
 import Data.Either (Either, either)
 import Effect (Effect)
 import Effect.Exception (error, throw, throwException)
-import Text.Parsing.Parser (ParseError())
+import Parsing (ParseError())
 
 assertEqual :: forall a. Show a => Eq a => a -> a -> Effect Unit
 assertEqual x y =
