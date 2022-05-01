@@ -48,9 +48,10 @@ import Data.Function (on)
 import Data.Foldable (all)
 import Control.Alt ((<|>))
 import Parsing (Parser(), ParseError(), runParser, fail)
+import Parsing.Token (eof)
 import Parsing.Combinators (sepBy, option)
 
-import Data.Version.Internal (eof, isAsciiAlpha, isDigit, match', nonNegativeInt, when')
+import Data.Version.Internal (isAsciiAlpha, isDigit, match', nonNegativeInt, when')
 
 -- | A semver version.
 data Version

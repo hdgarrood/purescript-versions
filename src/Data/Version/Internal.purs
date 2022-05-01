@@ -4,11 +4,11 @@ import Prelude hiding (when)
 
 import Data.CodePoint.Unicode (toLowerSimple)
 import Data.Int (fromString)
-import Data.List (List, toUnfoldable, some, null)
+import Data.List (List, toUnfoldable, some)
 import Data.Maybe (maybe)
 import Data.String (codePointFromChar)
 import Data.String.CodeUnits (fromCharArray)
-import Parsing (Parser, ParseState(..), Position, initialPos, getParserT, fail)
+import Parsing (Parser, Position, fail, initialPos)
 import Parsing.Token (when, match)
 
 isDigit :: Char -> Boolean
@@ -32,8 +32,3 @@ match' = match lieAboutPos
 
 when' :: forall a. (a -> Boolean) -> Parser (List a) a
 when' = when lieAboutPos
-
-eof :: forall a. Parser (List a) Unit
-eof =
-  getParserT >>= \(ParseState (input :: List a) _ _) ->
-    unless (null input) (fail "expected eof")

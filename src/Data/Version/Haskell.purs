@@ -16,8 +16,9 @@ import Data.List (List(..), toUnfoldable, fromFoldable, some)
 import Data.List.Types (NonEmptyList)
 import Data.String (joinWith)
 import Data.String.CodeUnits (fromCharArray, toCharArray)
-import Data.Version.Internal (eof, match', nonNegativeInt, isDigit, isAsciiAlpha, when')
+import Data.Version.Internal (match', nonNegativeInt, isDigit, isAsciiAlpha, when')
 import Parsing (Parser, ParseError, runParser)
+import Parsing.Token (eof)
 import Parsing.Combinators (sepBy, sepBy1, option)
 
 -- | A version consists of at least one integer component, and any number of
