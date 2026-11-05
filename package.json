@@ -1,10 +1,10 @@
 {
   "private": true,
   "scripts": {
-    "build": "pulp build",
-    "test": "pulp test"
+    "build": "spago build",
+    "test": "spago test"
   },
   "devDependencies": {
-    "pulp": "^16.0.0"
+    "spago": "1.0.5"
   }
 }
