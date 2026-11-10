@@ -1,0 +1,29 @@
+package:
+  name: versions
+  publish:
+    version: 7.0.1
+    license: MIT
+    location:
+      githubOwner: hdgarrood
+      githubRepo: purescript-versions
+  dependencies:
+    - control: ">=6.0.0 <7.0.0"
+    - either: ">=6.0.0 <7.0.0"
+    - foldable-traversable: ">=6.0.0 <7.0.0"
+    - integers: ">=6.0.0 <7.0.0"
+    - lists: ">=7.0.0 <8.0.0"
+    - maybe: ">=6.0.0 <7.0.0"
+    - parsing: ">=9.0.0 <12.0.0"
+    - prelude: ">=6.0.0 <7.0.0"
+    - strings: ">=6.0.0 <7.0.0"
+    - unicode: ">=6.0.0 <7.0.0"
+  test:
+    main: Test.Main
+    dependencies:
+      - arrays: ">=7.0.0 <8.0.0"
+      - console: ">=6.0.0 <7.0.0"
+      - effect: ">=4.0.0 <5.0.0"
+      - exceptions: ">=6.0.0 <7.0.0"
+      - partial: ">=4.0.0 <5.0.0"
+      - tuples: ">=7.0.0 <8.0.0"
+workspace: {}
